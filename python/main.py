@@ -2,8 +2,8 @@ import argparse
 import logging
 import sys
 
-from follower import SimpleStripFollower
-from leader import Leader
+from borealis.follower import SimpleStripFollower
+from borealis.leader import Leader
 
 logging.basicConfig(level=logging.INFO)
 
@@ -17,8 +17,6 @@ def follower(args):
     l = Leader()
     l.register(f)
     l.spin()
-    # f.spin_once()
-    # print('((%s))' % args.length)
 
 def mono(args):
     f = SimpleStripFollower(args.length)

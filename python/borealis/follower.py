@@ -4,9 +4,9 @@ from typing import List
 
 import _rpi_ws281x as ws
 
-from model.color import ColorInterface, ColorRGB24
-from model.pixel import Pixel
-from model.position import PositionNormalized3D
+from .model.color import ColorInterface, ColorRGB24
+from .model.pixel import Pixel
+from .model.position import PositionNormalized3D
 
 logger = logging.getLogger(__name__)
 
@@ -79,7 +79,7 @@ class SimpleStripFollower(object):
 
     def pixel_iter(self):
         for i in range(self.length):
-            yield Pixel(i, PositionNormalized3D(i * 1. / (self.length - 1),0,0))
+            yield Pixel(i, PositionNormalized3D(i * 1. / self.length,0,0))
 
     def __del__(self):
         # Ensure ws2811_fini is called before the program quits. It'll make

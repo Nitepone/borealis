@@ -1,9 +1,9 @@
 import time
 
-from follower import FollowerInterface
-from model.color import ColorRGB24
-from model.position import Position3D
-from model.spacial import Spacial
+from .follower import FollowerInterface
+from .model.color import ColorRGB24
+from .model.position import Position3D
+from .model.spacial import Spacial
 
 
 class LeaderInterface(object):

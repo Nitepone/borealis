@@ -1,6 +1,6 @@
 from typing import List
 
-from model.position import PositionInterface
+from .position import PositionInterface
 
 
 class Pixel(object):
