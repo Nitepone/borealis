@@ -3,6 +3,8 @@ import time
 
 import _rpi_ws281x as ws
 
+from model.color import ColorInterface, ColorRGB24
+
 logger = logging.getLogger(__name__)
 
 
@@ -60,12 +62,17 @@ class SimpleStripFollower(object):
             message = ws.ws2811_get_return_t_str(resp)
             raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, message))
 
+    def update(self, identifier: int, color: ColorInterface):
+        ws.ws2811_led_set(self.channel, identifier, color.gbr.to_int32())
+
     def spin_once(self):
         """main loop"""
         for i in range(self.length):
-            ws.ws2811_led_set(self.channel, i, 0x0f0000)
-
+            self.update(i, ColorRGB24(120, 0, 120))
         self.flush()
+
+    def identifier_iter(self):
+        return range(self.length)
 
     def __del__(self):
         # Ensure ws2811_fini is called before the program quits. It'll make

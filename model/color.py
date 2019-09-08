@@ -7,8 +7,9 @@ class ColorInterface (object):
         return bytearray()
 
     @classmethod
-    def deserialize(cls, binary: bytearray)
+    def deserialize(cls, binary: bytearray):
         return cls()
+
 
 class ColorRGB24(object):
     
@@ -20,10 +21,18 @@ class ColorRGB24(object):
         self._g = g & 0xFF
         self._b = b & 0xFF
 
+    @property
+    def gbr(self):
+        # TODO reconsider this hack
+        return ColorRGB24(self._g, self._b, self._r)
+
+    def to_int32(self):
+        return (self._r << 16) | (self._g << 8) | self._b
+
     def serialize(self) -> bytearray:
         return bytearray([self._r, self._g, self._b])
 
     @classmethod
-    def deserialize(cls, raw: bytearray)
+    def deserialize(cls, raw: bytearray):
         assert len(raw) == 3
         return cls(raw[0], raw[1], raw[2])

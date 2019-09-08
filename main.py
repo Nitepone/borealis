@@ -3,6 +3,7 @@ import logging
 import sys
 
 from follower import SimpleStripFollower
+from leader import Leader
 
 logging.basicConfig(level=logging.INFO)
 
@@ -12,8 +13,19 @@ def foo(args):
 
 def follower(args):
     f = SimpleStripFollower(args.length)
-    f.spin_once()
+
+    l = Leader()
+    l.register(f)
+    l.spin()
+    # f.spin_once()
     # print('((%s))' % args.length)
+
+def mono(args):
+    f = SimpleStripFollower(args.length)
+
+    l = Leader()
+    l.register(f)
+    l.spin()
 
 # create the top-level parser
 parser = argparse.ArgumentParser()
@@ -29,6 +41,11 @@ parser_foo.set_defaults(func=foo)
 parser_bar = subparsers.add_parser('follower')
 parser_bar.add_argument('--length', default=60)
 parser_bar.set_defaults(func=follower)
+
+# create the parser for the "mono" command
+parser_bar = subparsers.add_parser('mono')
+parser_bar.add_argument('--length', default=60)
+parser_bar.set_defaults(func=mono)
 
 # parse the args and call whatever function was selected
 args = parser.parse_args(sys.argv[1:])
