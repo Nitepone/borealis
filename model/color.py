@@ -11,6 +11,19 @@ class ColorInterface (object):
         return cls()
 
 
+class ColorNChannel(object):
+    CHANNEL_BITS = 8
+
+    def __init__(self, *args):
+        self.channel_mask = 1 << (CHANNEL_BITS - 1)
+        self.channels = list(map(lambda x: x & self.channel_mask, args))
+
+    def to_int(self):
+        return sum(
+            lambda i: self.channels[i] << (self.CHANNEL_BITS * i),
+            self.channels
+        )
+
 class ColorRGB24(object):
     
     def __init__(self, r: int, g: int, b: int):
@@ -36,3 +49,9 @@ class ColorRGB24(object):
     def deserialize(cls, raw: bytearray):
         assert len(raw) == 3
         return cls(raw[0], raw[1], raw[2])
+
+class ColorHSV24(object):
+    CHANNEL_BITS = 8
+
+    def __init__(self, h: int, s: int, v: int):
+        pass

@@ -19,22 +19,23 @@ class Leader(LeaderInterface):
 
     def __init__(self):
         self.followers = []
+        self.spacial = Spacial()
 
     def register(self, follower: FollowerInterface):
         self.followers.append(follower)
 
-    def update_follower(self, follower, c):
-        for identifier in follower.identifier_iter():
-            follower.update(identifier, c)
+    def update_follower(self, follower):
+        for pixel in follower.pixel_iter():
+            c = self.spacial.render(pixel, time.time())
+            follower.update(pixel, c)
         follower.flush()
 
     def spin(self):
-        s = Spacial()
         i = 0
         while True:
-            c = s.render(None, time.time())
+            # c = s.render(None, time.time())
             # c = ColorRGB24(i, 0, 0)
             for f in self.followers:
-                self.update_follower(f, c)
+                self.update_follower(f)
             time.sleep(0.1)
             i = (i + 2) % 255

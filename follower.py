@@ -1,9 +1,12 @@
 import logging
 import time
+from typing import List
 
 import _rpi_ws281x as ws
 
 from model.color import ColorInterface, ColorRGB24
+from model.pixel import Pixel
+from model.position import PositionNormalized3D
 
 logger = logging.getLogger(__name__)
 
@@ -62,8 +65,8 @@ class SimpleStripFollower(object):
             message = ws.ws2811_get_return_t_str(resp)
             raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, message))
 
-    def update(self, identifier: int, color: ColorInterface):
-        ws.ws2811_led_set(self.channel, identifier, color.gbr.to_int32())
+    def update(self, pixel: Pixel, color: ColorInterface):
+        ws.ws2811_led_set(self.channel, pixel._id, color.gbr.to_int32())
 
     def spin_once(self):
         """main loop"""
@@ -73,6 +76,10 @@ class SimpleStripFollower(object):
 
     def identifier_iter(self):
         return range(self.length)
+
+    def pixel_iter(self):
+        for i in range(self.length):
+            yield Pixel(i, PositionNormalized3D(i * 1. / (self.length - 1),0,0))
 
     def __del__(self):
         # Ensure ws2811_fini is called before the program quits. It'll make

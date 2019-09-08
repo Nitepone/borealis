@@ -1,5 +1,10 @@
+from typing import List
+
+from model.position import PositionInterface
+
+
 class Pixel(object):
-    def __init__(self, identifier: int, position: Position):
+    def __init__(self, identifier: int, position: PositionInterface):
         self._position = position
         self._id = identifier
 
