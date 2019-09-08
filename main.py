@@ -1,7 +1,10 @@
 import argparse
+import logging
 import sys
 
 from follower import SimpleStripFollower
+
+logging.basicConfig(level=logging.INFO)
 
 # sub-command functions
 def foo(args):
@@ -9,7 +12,7 @@ def foo(args):
 
 def follower(args):
     f = SimpleStripFollower(args.length)
-    f.spin()
+    f.spin_once()
     # print('((%s))' % args.length)
 
 # create the top-level parser
