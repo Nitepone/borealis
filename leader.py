@@ -2,6 +2,8 @@ import time
 
 from follower import FollowerInterface
 from model.color import ColorRGB24
+from model.position import Position3D
+from model.spacial import Spacial
 
 
 class LeaderInterface(object):
@@ -27,9 +29,11 @@ class Leader(LeaderInterface):
         follower.flush()
 
     def spin(self):
+        s = Spacial()
         i = 0
         while True:
-            c = ColorRGB24(i, 0, 0)
+            c = s.render(None, time.time())
+            # c = ColorRGB24(i, 0, 0)
             for f in self.followers:
                 self.update_follower(f, c)
             time.sleep(0.1)
